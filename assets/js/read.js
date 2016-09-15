@@ -32,6 +32,14 @@
 
  $(function(){
 
- 	//code goes here
+ $('#employeeTable').DataTable({
+       dom: 'Bfrtip',
+       "scrollX": true,
+       buttons: [
+       'copy', 'csv', 'excel', 'pdf', 'print'
+       ],
+       colReorder: true
+   });
+
 
  })

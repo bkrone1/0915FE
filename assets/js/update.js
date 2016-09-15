@@ -49,6 +49,67 @@
  */
 
 $(function(){
- 	
+ 	$("#updateEmployeeForm :input").prop("disabled", true);
+
+ 	$("#employeeId").change(function(){
+ 		$("#updateEmployeeForm :input").prop("disabled", false);
+
+ 		$.get( "http://localhost:1337/employee/" + $(this).val(), function( data ) {
+	  		
+	  		$.each(data, function(name, val){
+			    var el = $('[name="'+name+'"]');
+			    var type = el.attr('type');
+
+			    switch(type){
+			        case 'checkbox':
+			            el.attr('checked', 'checked');
+			            break;
+			        case 'radio':
+			            el.filter('[value="'+val+'"]').attr('checked', 'checked');
+			            break;
+			        default:
+			            el.val(val);
+			    }
+			});
+
+		});
+ 	})
+
+ 	$("#addEmployeeForm").validate({
+		rules: {
+		    // simple rule, converted to {required:true}
+	    	firstName: {
+		    	required: true,
+		    	minlength: 2
+		    },
+		    lastName: {
+		    	required: true,
+		    	minlength: 2
+		    },
+		    email: {
+		    	required: true,
+		    	email: true
+		    },
+		    homePhone: {
+		    	phoneUS: true
+		    },
+		    cellPhone: {
+		    	phoneUS: true
+		    },
+		    password: {
+		    	pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^\&*\)\(+=._-])[0-9a-zA-Z!@#\$%\^\&*\)\(+=._-]{8,}$/
+		    },
+		    password_verify: {
+      			equalTo: "#password"
+    		}
+		},
+	    messages: {
+		    password: {
+		      pattern: "Enter a valid password"
+		    }
+  		},
+  		errorClass: "text-danger"
+	})
 
 })
+ 	
